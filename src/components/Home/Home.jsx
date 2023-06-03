@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Product from "../Product/Product";
+import AddProduct from "../AddProduct/AddProduct";
 
 const Home = () => {
      const [products, setProducts] = useState([]);
@@ -20,7 +21,7 @@ const Home = () => {
                </div>
               </div>
               <div className="add-product-area w-1/4 ">
-               <h1>add products</h1>
+                    <AddProduct/>
               </div>
           </div>
      );
