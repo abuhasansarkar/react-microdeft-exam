@@ -1,40 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 const AddProduct = () => {
+    
+     const { register, handleSubmit } = useForm();
+     const [data, setData] = useState("");
+
+
+     useEffect(() => {
+          fetch('https://fakestoreapi.com/products',{
+            method:"POST",
+            body:JSON.stringify(
+                {
+                    title: data.productTitle,
+                    price: data.productPrice,
+                    description: data.productDescription,
+                    image: data.productImgUrl,
+                    category: 'data.category'
+                }
+            )
+        })
+            .then(res=>res.json())
+            .then(json=>console.log(json))
+
+
+     } , [])
+
   return (
-    <form className="border p-5">
-      <lable id="name">Product Name</lable>
-      <input
-        type="text"
-        name="name"
-        className="input input-bordered input-info w-full max-w-xs"
-      />
-      <lable id="dis">Discription</lable>
-      <textarea
-        type="text"
-        name="dis"
-        className="input input-bordered input-info w-full max-w-xs"
-      />
-      <p id="dis">Category</p>
-      <select className="rounded border w-full max-w-xs p-2" name="" id="">
-          <option value="women-cloth">women's clothing</option>
-          <option value="men-cloth">men's clothing</option>
+     <form className="bg-sky-400 p-5" onSubmit={handleSubmit((data) => setData(JSON.stringify(data)))}>
+          <h2 className="text-center text-lg">Add New Product</h2>
+      <input className="border p-2 block w-full mb-4" type="text" {...register("productTitle")} placeholder="Product name" />
+      
+      <textarea className="border p-2 block w-full mb-4" {...register("productDescription")} placeholder="Product Description" />
+
+      <select className="border p-2 block w-full mb-4" {...register("category", { required: true })}>
+        <option value="">Select...</option>
+        <option value="menCloth">Man Cloths</option>
+        <option value="womenCloth">Women Cloths</option>
       </select>
 
-      <lable id="img">Image URL</lable>
-      <input
-        type="text"
-        name="dis"
-        className="input input-bordered input-info w-full max-w-xs"
-      />
-      <lable id="img">Price</lable>
-      <input
-        type="number"
-        name="dis"
-        className="input input-bordered input-info w-full max-w-xs"
-      />
+      <input className="border p-2 block w-full mb-4" type="url" {...register("productImgUrl")} placeholder="Product Image Url" />
 
-     <button type="submit" className="btn btn-primary mt-4 block">Add Product</button>
+      <input className="border p-2 block w-full mb-4" type="number" {...register("productPrice")} placeholder="Product Price" />
+
+      <p>{data}</p>
+      <input className="btn w-full" type="submit" />
     </form>
   );
 };
